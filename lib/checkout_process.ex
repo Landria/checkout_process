@@ -1,15 +1,17 @@
 defmodule CheckoutProcess do
   use GenServer
 
-  # API
+  # Client
 
   @moduledoc false
 
   @doc """
   Start CheckoutProcrss process.
   """
-  def new() do
-    {:ok, pid} = GenServer.start_link(__MODULE__, %{})
+  def new(products, rules \\ []) do
+    {:ok, pid} =
+      GenServer.start_link(__MODULE__, %{:cart => [], :products => products, rules: rules})
+
     pid
   end
 
@@ -42,16 +44,15 @@ defmodule CheckoutProcess do
   end
 
   @doc """
-  Return total sum
+  Return printable total sum
   """
   def total(pid) do
     GenServer.call(pid, {:calculate_cart_total})
   end
 
-  # Callbacks
-
-  def init(_) do
-    {:ok, %{:cart => []}}
+  # Server
+  def init(args) do
+    {:ok, args}
   end
 
   def handle_cast({:add_product_to_cart, code}, state) do
