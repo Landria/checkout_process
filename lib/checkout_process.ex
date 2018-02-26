@@ -1,6 +1,6 @@
 defmodule CheckoutProcess do
-  defdelegate get_price(product, state),    to: CheckoutProcess.Impl
-  defdelegate printable_total(total),       to: CheckoutProcess.Impl
+  #defdelegate get_price(product, state), to: CheckoutProcess.Impl
+  #defdelegate printable_total(total), to: CheckoutProcess.Impl
 
   # API
 
@@ -11,7 +11,11 @@ defmodule CheckoutProcess do
   """
   def new(products, rules \\ []) do
     {:ok, pid} =
-      GenServer.start_link(CheckoutProcess.Server, %{:cart => [], :products => products, rules: rules})
+      GenServer.start_link(CheckoutProcess.Server, %{
+        :cart => [],
+        :products => products,
+        :rules => rules
+      })
 
     pid
   end
@@ -35,6 +39,13 @@ defmodule CheckoutProcess do
   """
   def read_products(pid) do
     GenServer.call(pid, {:read_products})
+  end
+
+  @doc """
+  Get the rules state
+  """
+  def read_rules(pid) do
+    GenServer.call(pid, {:read_rules})
   end
 
   @doc """

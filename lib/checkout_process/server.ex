@@ -1,5 +1,4 @@
 defmodule CheckoutProcess.Server do
-
   use GenServer
 
   alias CheckoutProcess.Impl
@@ -30,8 +29,18 @@ defmodule CheckoutProcess.Server do
     {:reply, state[:products], state}
   end
 
+  def handle_call({:read_rules}, _, state) do
+    {:reply, state[:rules], state}
+  end
+
   def handle_call({:calculate_cart_total}, _, state) do
-    total = Enum.reduce(state[:cart], 0, fn product, acc -> acc + Impl.get_price(product, state) end)
+    total =
+      state[:cart]
+      |> Enum.reduce(%{}, fn(product, acc) -> Map.update(acc, product, 1, &(&1 + 1)) end)
+      |> Enum.reduce(0, fn({product, quantity}, acc) ->
+        acc + Impl.sub_total(Impl.get_price(product, state), quantity, Impl.get_rule(product, state))
+      end)
+
     {:reply, Impl.printable_total(total), state}
   end
 end
