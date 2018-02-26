@@ -61,9 +61,8 @@ Solution is not production ready code. It's just an example of an Elixir code I'
 The implementation is very simple. You should pass an array of products and an array of rules (or skip the rules) to checkout initalizer.
 
 You can set up two types of pricing policies:
-
-*XMorePricing* if you want to set a discount to specific product over x items.
-*TwoForOnePricing* if you want to offer every second item for free
+*  *XMorePricing* if you want to set a discount to specific product over x items.
+*  *TwoForOnePricing* if you want to offer every second item for free
 
 There is no error handling specified (!to be implemented within next iteration).
 

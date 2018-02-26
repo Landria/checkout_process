@@ -1,8 +1,8 @@
 defmodule CheckoutProcess do
 
-  # API
-
-  @moduledoc false
+  @moduledoc """
+  API
+  """
 
   @doc """
   Start CheckoutProcrss process with initial products and rules
@@ -47,7 +47,7 @@ defmodule CheckoutProcess do
   end
 
   @doc """
-  Return printable total sum
+  Returns printable total sum
   """
   def total(pid) do
     GenServer.call(pid, {:calculate_cart_total})

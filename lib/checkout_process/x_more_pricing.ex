@@ -1,8 +1,10 @@
 defmodule CheckoutProcess.XMorePricing do
-  @moduledoc false
+  @moduledoc """
+  Defining XMorePricing rule.
+  """
 
   @doc """
-  Defining XMorePricing rule.
+  Initializing XMorePricing rule.
   """
   def new(product, border_quantity, new_price) do
     %{
@@ -13,6 +15,9 @@ defmodule CheckoutProcess.XMorePricing do
     }
   end
 
+  @doc """
+  Calculating product subtotal according to XMore pricing policy.
+  """
   def sub_total(price, quantity, rule) do
     if quantity >= rule[:border_quantity] do
       rule[:new_price] * quantity
