@@ -18,6 +18,15 @@ defmodule CheckoutProcess.Impl do
     |> String.to_float()
   end
 
+  def total(state) do
+    state[:cart]
+    |> Enum.reduce(%{}, fn product, acc -> Map.update(acc, product, 1, &(&1 + 1)) end)
+    |> Enum.reduce(0, fn {product, quantity}, acc ->
+      acc +
+        sub_total(get_price(product, state), quantity, get_rule(product, state))
+    end)
+  end
+
   def sub_total(price, quantity, rule) do
     case rule[:pricing] do
       "TwoForOne" ->
