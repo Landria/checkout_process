@@ -36,9 +36,10 @@ defmodule CheckoutProcess.Server do
   def handle_call({:calculate_cart_total}, _, state) do
     total =
       state[:cart]
-      |> Enum.reduce(%{}, fn(product, acc) -> Map.update(acc, product, 1, &(&1 + 1)) end)
-      |> Enum.reduce(0, fn({product, quantity}, acc) ->
-        acc + Impl.sub_total(Impl.get_price(product, state), quantity, Impl.get_rule(product, state))
+      |> Enum.reduce(%{}, fn product, acc -> Map.update(acc, product, 1, &(&1 + 1)) end)
+      |> Enum.reduce(0, fn {product, quantity}, acc ->
+        acc +
+          Impl.sub_total(Impl.get_price(product, state), quantity, Impl.get_rule(product, state))
       end)
 
     {:reply, Impl.printable_total(total), state}

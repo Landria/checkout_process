@@ -20,5 +20,4 @@ defmodule CheckoutProcess.XMorePricing do
       price * quantity
     end
   end
-
 end

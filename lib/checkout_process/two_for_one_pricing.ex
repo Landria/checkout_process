@@ -11,7 +11,9 @@ defmodule CheckoutProcess.TwoForOnePricing do
   end
 
   def sub_total(price, quantity) do
-    payable_quantity = if Integer.is_even(quantity), do: div(quantity, 2) , else: div(quantity, 2) + 1
+    payable_quantity =
+      if Integer.is_even(quantity), do: div(quantity, 2), else: div(quantity, 2) + 1
+
     payable_quantity * price
   end
 end

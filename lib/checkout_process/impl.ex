@@ -22,8 +22,10 @@ defmodule CheckoutProcess.Impl do
     case rule[:pricing] do
       "TwoForOne" ->
         TwoForOnePricing.sub_total(price, quantity)
+
       "XMore" ->
         XMorePricing.sub_total(price, quantity, rule)
+
       nil ->
         price * quantity
     end
@@ -37,6 +39,6 @@ defmodule CheckoutProcess.Impl do
     Enum.filter(state[:rules], fn element ->
       element[:product] == product
     end)
-    |> List.last
+    |> List.last()
   end
 end

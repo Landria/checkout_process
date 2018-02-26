@@ -9,6 +9,12 @@ defmodule CheckoutProcessTest do
          %{:code => "VOUCHER", :name => "Cabify Voucher", :price => "5.00€"},
          %{:code => "TSHIRT", :name => "Cabify T-Shirt", :price => "20.00€"},
          %{:code => "MUG", :name => "Cafify Coffee Mug", :price => "7.50€"}
+       ],
+       products_with_duplication: [
+         %{:code => "VOUCHER", :name => "Cabify Voucher", :price => "5.00€"},
+         %{:code => "TSHIRT", :name => "Cabify T-Shirt", :price => "20.00€"},
+         %{:code => "TSHIRT", :name => "Cabify T-Shirt", :price => "10.00€"},
+         %{:code => "MUG", :name => "Cafify Coffee Mug", :price => "7.50€"}
        ]
      ]}
   end
@@ -22,6 +28,14 @@ defmodule CheckoutProcessTest do
     assert checkout |> CheckoutProcess.read_cart() == ["TSHIRT", "VOUCHER", "VOUCHER"]
     assert checkout |> CheckoutProcess.read_products() == context[:products]
     assert checkout |> CheckoutProcess.total() == "30.00€"
+  end
+
+  test "calculates total for products with uplication", context do
+    checkout = CheckoutProcess.new(context[:products])
+    checkout |> CheckoutProcess.scan("VOUCHER")
+    checkout |> CheckoutProcess.scan("TSHIRT")
+
+    assert checkout |> CheckoutProcess.total() == "25.00€"
   end
 
   test "ignores nonexisting products", context do

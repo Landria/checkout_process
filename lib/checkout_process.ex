@@ -1,6 +1,4 @@
 defmodule CheckoutProcess do
-  #defdelegate get_price(product, state), to: CheckoutProcess.Impl
-  #defdelegate printable_total(total), to: CheckoutProcess.Impl
 
   # API
 
